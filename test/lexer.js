@@ -28,4 +28,9 @@ $(document).ready(function() {
     same(new Lexer("20	 + 3.1415").getTokensList().toString(), "[tag: NUM],[tag: +],[tag: REAL]", "It should return list of tokens");
   });
 
+  test("Tokenize reserved words", function() {
+    same(new Lexer("if (test == 10) {test = test + 1}").getTokensList().toString(), "[tag: IF],[tag: (],[tag: ID],[tag: EQ],[tag: NUM],[tag: )],[tag: {],[tag: ID],[tag: =],[tag: ID],[tag: +],[tag: NUM],[tag: }]", "It should return list of tokens");
+    same(new Lexer("if(test !=10) {test   = test + 1 } ").getTokensList().toString(), "[tag: IF],[tag: (],[tag: ID],[tag: NE],[tag: NUM],[tag: )],[tag: {],[tag: ID],[tag: =],[tag: ID],[tag: +],[tag: NUM],[tag: }]", "It should return list of tokens");
+  });
+
 });

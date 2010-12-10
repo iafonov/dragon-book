@@ -53,6 +53,10 @@
   };
 
   var word = function(spec) {
+    if (Word.reserved(spec.lexeme)) {
+      return Word[spec.lexeme];
+    }
+
     var that = token({tag: spec.tag});
 
     that.getLexeme = function() {
@@ -67,9 +71,12 @@
       this[name] = word({ lexeme: lexeme, tag: Tag[name.toUpperCase()] });
     },
 
-    reserve : function(name) {
-      this.reserved = this.reserved || [];
-      this.reserved.push(word({ lexeme: name, tag: Tag[name.toUpperCase()] }));
+    reserve : function(lexeme) {
+      this[lexeme] = word({ lexeme: lexeme, tag: Tag[lexeme.toUpperCase()] });
+    },
+
+    reserved : function(lexeme) {
+      return this.hasOwnProperty(lexeme);
     }
   };
 
@@ -119,9 +126,10 @@
           this.pos++;
         } while (isDigit(this.peek()));
 
-        if (this.peekAndAdvance() != ".") {
+        if (this.peek() != ".") {
           return number({value: v});
         }
+        this.pos++;
 
         var digit = 10;
         do {
@@ -139,6 +147,8 @@
         do {
           str += this.peekAndAdvance();
         } while (isAlpha(this.peek()) || isDigit(this.peek()));
+
+        
 
         return word({tag: Tag.ID, lexeme: str});
       }
