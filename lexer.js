@@ -1,22 +1,22 @@
 (function(){
-  var Tag = {};
+  var Tag = {
+    enumerateTags: function() {
+      var startIndex = 256;
+      _(arguments).each(function(keyword) {
+        Tag[keyword.toUpperCase()] = startIndex++;
+      });
+    },
 
-  Tag.getTagById = function(id) {
-    return _(Tag).keys()[_(Tag).values().indexOf(id)] || id;
+    getTagById: function(id) {
+      return _(Tag).keys()[_(Tag).values().indexOf(id)] || id;
+    }
   };
 
-  var enumerateTags = function() {
-    var startIndex = 256;
-    _(arguments).each(function(keyword) {
-      Tag[keyword.toUpperCase()] = startIndex++;
-    });
-  };
-
-  enumerateTags("and",   "basic", "break", "do",
-                "else",  "eq",    "false", "ge",
-                "id",    "if",    "index", "le",
-                "minus", "ne",    "num",   "or",
-                "real",  "temp",  "true",  "while");
+  Tag.enumerateTags("and",   "basic", "break", "do",
+                    "else",  "eq",    "false", "ge",
+                    "id",    "if",    "index", "le",
+                    "minus", "ne",    "num",   "or",
+                    "real",  "temp",  "true",  "while");
 
   var token = function(spec) {
     var that = {};
